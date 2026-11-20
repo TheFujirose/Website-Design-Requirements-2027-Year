@@ -1,0 +1,199 @@
+% Example section for the Humber ASV template.
+% This section demonstrates all major features of the template.
+% It is meant to be included temporarily for reference and removed before final submission.
+% MIT License
+%
+% Copyright (c) 2026 HumberASV
+% Copyright (c) 2026 Carson Fujita
+%
+% Permission is hereby granted, free of charge, to any person obtaining a copy
+% of this software and associated documentation files (the "Software"), to deal
+% in the Software without restriction, including without limitation the rights
+% to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+% copies of the Software, and to permit persons to whom the Software is
+% furnished to do so, subject to the following conditions:
+%
+% The above copyright notice and this permission notice shall be included in all
+% copies or substantial portions of the Software.
+%
+% THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+% IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+% FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+% AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+% LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+% OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+% SOFTWARE.
+
+\section{Template Usage Guide}
+
+This section documents every feature of the Humber ASV \LaTeX{} template.
+Remove or comment out this file from \texttt{main.tex} before submitting.
+
+\subsection{Project Structure}
+
+The repository is organized as follows:
+
+\begin{longtable}{ll}
+    \textbf{Path} & \textbf{Purpose} \\
+    \hline
+    \texttt{main.tex} & Entry point; orchestrates the document \\
+    \texttt{preamble.sty} & All packages, settings, and custom commands \\
+    \texttt{sections/} & One \texttt{.tex} file per content section \\
+    \texttt{citations/citations.bib} & BibTeX bibliography entries \\
+    \texttt{images/} & Figures and the logo (\texttt{logo.png}) \\
+    \texttt{code/} & Source code snippets or listings \\
+\end{longtable}
+
+\subsection{Title Page}
+
+The \texttt{\textbackslash asvtitle} command generates a centred title page with the logo,
+title, institution name, version, and date.
+
+\begin{verbatim}
+% Optional date defaults to \today when omitted
+\asvtitle{My Document Title}{1.0.0}
+\asvtitle[2026-01-15]{My Document Title}{1.0.0}
+\end{verbatim}
+
+\subsection{Table of Contents}
+
+Call \texttt{\textbackslash startcontents} immediately after \texttt{\textbackslash asvtitle}.
+It generates the table of contents, list of figures, and list of tables on separate pages.
+
+\begin{verbatim}
+\startcontents
+\end{verbatim}
+
+\subsection{Adding Sections}
+
+Create a new \texttt{.tex} file inside \texttt{sections/} and include it in \texttt{main.tex}
+using \texttt{\textbackslash input}:
+
+\begin{verbatim}
+\input{sections/introduction.tex}
+\input{sections/methodology.tex}
+\input{sections/results.tex}
+\end{verbatim}
+
+Each call to \texttt{\textbackslash section\{\}} inside a section file automatically appears in
+the table of contents.
+
+\subsection{Appendix}
+
+Call \texttt{\textbackslash startappendix} before any appendix \texttt{\textbackslash input} calls.
+Section numbers switch to letters (A, B, C, \ldots) automatically.
+
+\begin{verbatim}
+\startappendix
+\input{sections/glossary.tex}
+
+\section{Bibliography}
+\printbibliography[heading=none]
+\end{verbatim}
+
+\subsection{Citations}
+
+Add BibTeX entries to \texttt{citations/citations.bib}, then cite inline with
+\texttt{\textbackslash autocite\{key\}}. Example entry and usage:
+
+\begin{verbatim}
+% citations/citations.bib
+@misc{example2026,
+    author = {Author, A.},
+    title  = {Example Reference},
+    year   = {2026},
+    url    = {https://example.com}
+}
+\end{verbatim}
+
+\begin{verbatim}
+% In a section file
+The system was validated against prior work \autocite{example2026}.
+\end{verbatim}
+
+Run \texttt{pdflatex}, then \texttt{bibtex}, then \texttt{pdflatex} twice to resolve all references.
+
+\subsection{Figures}
+
+Place image files in \texttt{images/}. Use the \texttt{[H]} specifier (provided by the
+\texttt{float} package) to pin a figure exactly where it appears in the source.
+
+\begin{verbatim}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{./images/my-diagram.png}
+    \caption{A descriptive caption.}
+    \label{fig:my-diagram}
+\end{figure}
+
+See Figure~\ref{fig:my-diagram} for details.
+\end{verbatim}
+
+\subsection{Tables}
+
+Use \texttt{longtable} for multi-page tables, \texttt{multirow} for spanning rows, and
+\texttt{makecell} for line breaks inside cells.
+
+\begin{verbatim}
+\begin{longtable}{|l|c|p{6cm}|}
+    \hline
+    \textbf{Name} & \textbf{Value} & \textbf{Description} \\
+    \hline
+    Speed & 2 m/s & Maximum forward velocity \\
+    \makecell{Turn \\ radius} & 1.5 m & Minimum turning radius at full speed \\
+    \hline
+    \caption{System parameters.}
+    \label{tab:params}
+\end{longtable}
+\end{verbatim}
+
+\subsection{Landscape Pages}
+
+Wrap wide content in the \texttt{landscape} environment from the \texttt{pdflscape} package.
+Only the enclosed pages rotate; the rest of the document is unaffected.
+
+\begin{verbatim}
+\begin{landscape}
+    % Wide table or figure here
+\end{landscape}
+\end{verbatim}
+
+\subsection{Callout Boxes}
+
+Three callout box commands are available for drawing attention to important content.
+
+\subsubsection*{Warning Box}
+
+Use \texttt{\textbackslash warningbox} for critical information the reader must not miss.
+
+\warningbox{This is a warning. Ignoring this may result in hardware damage or unsafe operation.}
+
+\begin{verbatim}
+\warningbox{This is a warning. Ignoring this may result in hardware damage.}
+\end{verbatim}
+
+\subsubsection*{Note Box}
+
+Use \texttt{\textbackslash notebox} for optional guidance or contextual information.
+
+\notebox{This is a note. It provides additional context that is helpful but not critical.}
+
+\begin{verbatim}
+\notebox{This is a note. It provides additional context.}
+\end{verbatim}
+
+\subsubsection*{Info Box}
+
+Use \texttt{\textbackslash infobox} for positive status updates or useful reference details.
+
+\infobox{This is an info box. Use it to highlight useful facts or confirmed status.}
+
+\begin{verbatim}
+\infobox{This is an info box. Use it to highlight useful facts.}
+\end{verbatim}
+
+All three commands accept an optional second argument for supplementary content below the main message:
+
+\begin{verbatim}
+\warningbox{Primary warning message.}[See Section~\ref{sec:safety} for details.]
+\end{verbatim}
